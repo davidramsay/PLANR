@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PLANR.Models.Goal>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Goals</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GoalName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoalName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoalDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Goalid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Goalid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Goalid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

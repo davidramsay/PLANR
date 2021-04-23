@@ -1,0 +1,104 @@
+﻿@model IEnumerable<PLANR.Models.Task>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@if (User.Identity.IsAuthenticated)
+{
+<div class="row">
+    <p>
+        <a asp-action="Create">Create New Task</a>
+    </p>
+    <p>     /    </p>
+    <p>
+        <a asp-area="" asp-controller="Records" asp-action="Create">Record New Data</a>
+    </p>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <h1>Today's Schedule</h1>
+                <div id="Friday, Nov 13th">
+                    <p>
+                        Friday, Nov 13th
+                    </p>
+                    <ul class="list-timeline list-timeline-primary">
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
+                            <p><span>08:00 - 12:00</span> - Class</p>
+                        </li>
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
+                            <p><span>12:00 - 13:00</span> - Lunch Break</p>
+                        </li>
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column" data-toggle="collapse" data-target="#day-1-item-4">
+                            <p><span>13:00 - 15:00</span> - Class W/ Rudy</p>
+                            <p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8" id="day-1-item-4"> Talk: OpenData / <span class="text-primary">MS Teams</span> </p>
+                        </li>
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
+                            <p><span>15:00 - 16:00</span> - Chat w/ Chris </p>
+                        </li>
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column" data-toggle="collapse" data-target="#day-1-item-6">
+                            <p><span>16:00 - 18:00</span> - Homework</p>
+                            <p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8" id="day-1-item-6"> Talk: Ninja coding / <span class="text-primary">Room 31</span> </p>
+                        </li>
+                        <li class="list-timeline-item p-0 pb-3 d-flex flex-wrap flex-column">
+                            <p><span>18:00 - 23:00</span> - Unwind</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-5">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TaskName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TaskDescription)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TaskDueDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Objective)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TaskName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TaskDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TaskDueDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Objective.MetricName)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Taskid">Edit</a> /
+                                    <a asp-action="Delete" asp-route-id="@item.Taskid">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+            }
+            else
+            {
+            <div class="text-center">
+                <h1 class="display-4">Welcome To PlanR</h1>
+                <p>Meet Your Developer: <a href="https://www.linkedin.com/in/david-w-ramsay/">David Ramsay</a></p>
+                <p>Need some <a asp-area="" asp-controller="Help" asp-action="Index">help</a>? </p>
+            </div>
+            }
