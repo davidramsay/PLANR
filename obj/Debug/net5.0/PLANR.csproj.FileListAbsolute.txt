@@ -6,7 +6,6 @@ C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.MvcApplic
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.RazorAssemblyInfo.cache
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.RazorAssemblyInfo.cs
-C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.csprojAssemblyReference.cache
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\bin\Debug\net5.0\appsettings.json
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\bin\Debug\net5.0\PLANR.StaticWebAssets.xml
@@ -217,3 +216,7 @@ C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Rec
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Records\Edit.cshtml.g.cs
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Records\Index.cshtml.g.cs
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Help\Index.cshtml.g.cs
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Shared\_EventsPartial.cshtml.g.cs
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.csprojAssemblyReference.cache
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Shared\_SchedulePartial.cshtml.g.cs
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Tasks\Migrate.cshtml.g.cs

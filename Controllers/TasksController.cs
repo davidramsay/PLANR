@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Data;
-
 using PLANR.Models;
 
 namespace PLANR.Controllers
@@ -24,7 +23,7 @@ namespace PLANR.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective);
+            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today);
             return View(await TaskTrackerContext.ToListAsync());
         }
 
@@ -93,7 +92,57 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Taskid,TaskName,TaskDescription,Objectiveid,TaskDueDate")] Models.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("Taskid, TaskName, TaskDescription, Objectiveid, TaskDueDate, TaskStatus")] Models.Task task)
+        {
+            if (id != task.Taskid)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(task);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TaskExists(task.Taskid))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
+            return View(task);
+        }
+        public async Task<IActionResult> Migrate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
+            return View(task);
+        }
+        // POST: Tasks/Migrate/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Migrate(int id, [Bind("TaskDueDate")] Models.Task task)
         {
             if (id != task.Taskid)
             {

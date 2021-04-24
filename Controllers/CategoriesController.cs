@@ -15,13 +15,14 @@ namespace PLANR.Controllers
     {
         private readonly TaskTrackerContext _context;
         
-
         public CategoriesController(TaskTrackerContext context)
         {
             _context = context;
         }
 
         // GET: Categories
+        //if user with usertoken already exists, set current user to matching userid
+        //if user with usertoken does not exist, creat new user and set current user to new user
         public async Task<IActionResult> Index()
         {
             var TaskTrackerContext = _context.Categories;
@@ -63,7 +64,6 @@ namespace PLANR.Controllers
         {
             if (ModelState.IsValid)
             {
-                category.Userid = User.Identity.Name;
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -161,3 +161,5 @@ namespace PLANR.Controllers
         }
     }
 }
+
+
