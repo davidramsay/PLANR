@@ -168,7 +168,7 @@ namespace PLANR.Data
 
                 entity.Property(e => e.TaskDescription)
                     .IsRequired()
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("taskDescription")
                     .IsFixedLength(true);
 

@@ -19,41 +19,52 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-#4475A0 border-bottom box-shadow mb-3" style="background-color: #4475A0;">
             @if (User.Identity.IsAuthenticated)
             {
-            <a class="navbar-brand" style="color: whitesmoke" asp-area="" asp-controller="Tasks" asp-action="Index"><img src="/Content/translogo.png" style="width:180px;height:60px;" /></a>
+                <a class="navbar-brand" style="color: whitesmoke" asp-area="" asp-controller="Tasks" asp-action="Index"><img src="/Content/translogo.png" style="width:180px;height:60px;" /></a>
             }
             else
             {
-            <a class="navbar-brand" style="color: whitesmoke" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Content/translogo.png" style="width:180px;height:60px;" /></a>
+                <a class="navbar-brand" style="color: whitesmoke" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Content/translogo.png" style="width:180px;height:60px;" /></a>
             }
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Goals" asp-action="Index">Goals</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Objectives" asp-action="Index">Objectives</a>
-                        </li>
-                    </ul>
-                }
-                <ul class="nav navbar-nav navbar-right">
+                <div class="col">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a style="color: whitesmoke" id="qsLogoutBtn" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Goals" asp-action="Index">Goals</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Objectives" asp-action="Index">Objectives</a>
+                            </li>
+                        </ul>
                     }
-                    else
-                    {
-                        <li><a style="color: whitesmoke" id="qsLoginBtn" asp-controller="Account" asp-action="Login">Login</a></li>
-                    }
-                </ul>
+                </div>
+                <div class="col">
+                    <h1 a class="navbar-brand" style="color: whitesmoke">
+                        @DateTime.Today.DayOfWeek
+                        @DateTime.Today.ToShortDateString()
+                    </h1>
+                </div>
+                <div class="col">
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a style="color: whitesmoke" id="qsLogoutBtn" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        }
+                        else
+                        {
+                            <li><a style="color: whitesmoke" id="qsLoginBtn" asp-controller="Account" asp-action="Login">Login</a></li>
+                        }
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -71,14 +82,20 @@
                 </div>
                 <div class="col">
                     <a asp-area="" asp-controller="Help" asp-action="Index">Help</a>
-                 </div>
-                <div class="col">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a asp-area="" asp-controller="Events" asp-action="Index">View and record Events</a>
-                        }
-                    </div>
                 </div>
+                <div class="col">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Events" asp-action="Index">View and record Events</a>
+                    }
+                </div>
+                <div class="col">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Tasks" asp-action="All">View all tasks</a>
+                    }
+                </div>
+            </div>
             </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

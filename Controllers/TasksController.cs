@@ -26,6 +26,12 @@ namespace PLANR.Controllers
             var TaskTrackerContext = _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today);
             return View(await TaskTrackerContext.ToListAsync());
         }
+        // GET: AllTasks
+        public async Task<IActionResult> All()
+        {
+            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective);
+            return View(await TaskTrackerContext.ToListAsync());
+        }
 
         // GET: Tasks/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -122,6 +128,9 @@ namespace PLANR.Controllers
             ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
             return View(task);
         }
+
+        // GET: Tasks/Migrate/5
+
         public async Task<IActionResult> Migrate(int? id)
         {
             if (id == null)
@@ -134,8 +143,30 @@ namespace PLANR.Controllers
             {
                 return NotFound();
             }
-            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
             return View(task);
+        }
+
+        public ActionResult Migrate1(int id)
+        {
+            var task = _context.Tasks.Find(id);
+            task.TaskDueDate.AddDays(1);
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate");
+        }
+        public void Migrate7(int id)
+        {
+            var task = _context.Tasks.Find(id);
+            task.TaskDueDate.AddDays(1);
+            _context.Update(task);
+            _context.SaveChanges();
+        }
+        public void Migrate30(int id)
+        {
+            var task = _context.Tasks.Find(id);
+            task.TaskDueDate.AddDays(1);
+            _context.Update(task);
+            _context.SaveChanges();
         }
         // POST: Tasks/Migrate/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -169,7 +200,6 @@ namespace PLANR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
             return View(task);
         }
 

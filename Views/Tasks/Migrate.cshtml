@@ -10,9 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="View">
+        <h1>  </h1>
+        <button type="button" onclick="='@Url.Action("Migrate1", "Task")'">
+            Migrate to Tomorrow
+        </button>
+        <!--<form asp-action="Migrate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<input type="hidden" asp-for="Taskid" />*@
+            <input type="hidden" asp-for="Taskid" />-->
             @*<input type="hidden" asp-for="TaskDescription" />
             <input type="hidden" asp-for="Objectiveid" />*@
             @*<div class="form-group">
@@ -20,15 +24,16 @@
                 <input asp-for="TaskName" class="form-control" />
                 <span asp-validation-for="TaskName" class="text-danger"></span>
             </div>*@
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="TaskDueDate" class="control-label"></label>
                 <input asp-for="TaskDueDate" class="form-control" />
                 <span asp-validation-for="TaskDueDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div>*@
+
+            <!--<div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        </form>-->
     </div>
 </div>
 

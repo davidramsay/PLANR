@@ -220,3 +220,4 @@ C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Sha
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.csprojAssemblyReference.cache
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Shared\_SchedulePartial.cshtml.g.cs
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Tasks\Migrate.cshtml.g.cs
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\Razor\Views\Tasks\All.cshtml.g.cs
