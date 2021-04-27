@@ -145,29 +145,55 @@ namespace PLANR.Controllers
             }
             return View(task);
         }
+        [HttpPost]
+        public ActionResult Migrate1(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddDays(1);
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+        [HttpPost]
 
-        public ActionResult Migrate1(int id)
+        public ActionResult Migrate7(int Taskid)
         {
-            var task = _context.Tasks.Find(id);
-            task.TaskDueDate.AddDays(1);
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddDays(7);
             _context.Update(task);
             _context.SaveChanges();
-            return RedirectToAction("Migrate");
+            return RedirectToAction("Migrate", new { id = Taskid });
         }
-        public void Migrate7(int id)
+        [HttpPost]
+
+        public ActionResult Migrate30(int Taskid)
         {
-            var task = _context.Tasks.Find(id);
-            task.TaskDueDate.AddDays(1);
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddMonths(1);
             _context.Update(task);
             _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
         }
-        public void Migrate30(int id)
+
+        [HttpPost]
+        public ActionResult MarkComplete(int Taskid)
         {
-            var task = _context.Tasks.Find(id);
-            task.TaskDueDate.AddDays(1);
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskStatus = true;
             _context.Update(task);
             _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
         }
+        [HttpPost]
+        public ActionResult MarkToDo(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskStatus = false;
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+
         // POST: Tasks/Migrate/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
