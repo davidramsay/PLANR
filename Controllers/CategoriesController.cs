@@ -20,13 +20,28 @@ namespace PLANR.Controllers
             _context = context;
         }
 
+        public User GetUser()
+        {
+            string userToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var qresult = from user in _context.Users
+                          where user.UserToken == userToken
+                          select user;
+            var result = qresult.FirstOrDefault();
+            return result;
+        }
         // GET: Categories
         //if user with usertoken already exists, set current user to matching userid
         //if user with usertoken does not exist, creat new user and set current user to new user
         public async Task<IActionResult> Index()
         {
-            var TaskTrackerContext = _context.Categories;
-            return View(await TaskTrackerContext.ToListAsync());
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from c in _context.Categories
+                                     join u in _context.Users
+                                     on c.UserId equals u.UserId
+                                     where u.UserId == userId
+                                     select c).ToListAsync();
+            return View(await TaskTrackerContext);
         }
 
         // GET: Categories/Details/5
@@ -51,7 +66,7 @@ namespace PLANR.Controllers
         // GET: Categories/Create
         public IActionResult Create()
         {
-            //ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Password");
+            //ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Password");
             return View();
         }
 
@@ -60,15 +75,17 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Categoryid,CategoryName,CategoryAbbreviation")] Category category)
+        public async Task<IActionResult> Create([Bind("Categoryid,UserId,CategoryName,CategoryAbbreviation")] Category category)
         {
             if (ModelState.IsValid)
             {
+                var currentUser = GetUser();
+                category.UserId = currentUser.UserId;
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Password", category.Userid);
+            //ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Password", category.UserId);
             return View(category);
         }
 
@@ -85,7 +102,7 @@ namespace PLANR.Controllers
             {
                 return NotFound();
             }
-            //ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Password", category.Userid);
+            //ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Password", category.UserId);
             return View(category);
         }
 
@@ -94,7 +111,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Categoryid,Userid,CategoryName,CategoryAbbreviation")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Categoryid,UserId,CategoryName,CategoryAbbreviation")] Category category)
         {
             if (id != category.Categoryid)
             {
@@ -121,7 +138,7 @@ namespace PLANR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["Userid"] = new SelectList(_context.Users, "Userid", "Password", category.Userid);
+            //ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Password", category.UserId);
             return View(category);
         }
 

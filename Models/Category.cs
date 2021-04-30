@@ -16,7 +16,7 @@ namespace PLANR.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Categoryid { get; set; }
-        public int Userid { get; set; }
+        public int UserId { get; set; }
         public string CategoryName { get; set; }
         public string CategoryAbbreviation { get; set; }
         public virtual ICollection<Goal> Goals { get; set; }

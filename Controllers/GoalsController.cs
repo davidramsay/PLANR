@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Models;
 using PLANR.Data;
-
+using System.Security.Claims;
 
 namespace PLANR.Controllers
 {
@@ -20,12 +20,28 @@ namespace PLANR.Controllers
         {
             _context = context;
         }
-
+        public User GetUser()
+        {
+            string userToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var qresult = from user in _context.Users
+                          where user.UserToken == userToken
+                          select user;
+            var result = qresult.FirstOrDefault();
+            return result;
+        }
         // GET: Goals
         public async Task<IActionResult> Index()
         {
-            var taskTrackerContext = _context.Goals.Include(g => g.Category);
-            return View(await taskTrackerContext.ToListAsync());
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from g in _context.Goals
+                                      join c in _context.Categories
+                                      on g.Categoryid equals c.Categoryid 
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select g).ToListAsync();
+            return View(await TaskTrackerContext);
         }
 
         // GET: Goals/Details/5
@@ -50,7 +66,14 @@ namespace PLANR.Controllers
         // GET: Goals/Create
         public IActionResult Create()
         {
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "CategoryAbbreviation");
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from c in _context.Categories
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select c);
+            ViewData["Categories"] = new SelectList(TaskTrackerContext, "Categoryid", "CategoryAbbreviation");
             return View();
         }
 

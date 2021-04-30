@@ -17,7 +17,7 @@ namespace PLANR.Data
             : base(options)
         {
         }
-
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Goal> Goals { get; set; }
@@ -44,20 +44,20 @@ namespace PLANR.Data
 
                 entity.Property(e => e.CategoryAbbreviation)
                     .IsRequired()
-                    .HasMaxLength(4)
+                    .HasMaxLength(5)
                     .HasColumnName("categoryAbbreviation");
 
                 entity.Property(e => e.CategoryName)
                     .IsRequired()
-                    .HasMaxLength(15)
+                    .HasMaxLength(20)
                     .HasColumnName("categoryName")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Categories)
-                    .HasForeignKey(d => d.Userid)
+                    .HasForeignKey(d => d.UserId)
                      .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Categories_Categories");
 
