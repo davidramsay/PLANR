@@ -17,7 +17,7 @@ namespace PLANR.Data
             : base(options)
         {
         }
-
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Goal> Goals { get; set; }
@@ -44,16 +44,22 @@ namespace PLANR.Data
 
                 entity.Property(e => e.CategoryAbbreviation)
                     .IsRequired()
-                    .HasMaxLength(4)
+                    .HasMaxLength(5)
                     .HasColumnName("categoryAbbreviation");
 
                 entity.Property(e => e.CategoryName)
                     .IsRequired()
-                    .HasMaxLength(15)
+                    .HasMaxLength(20)
                     .HasColumnName("categoryName")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Categories)
+                    .HasForeignKey(d => d.UserId)
+                     .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Categories_Categories");
 
             });
 
@@ -162,7 +168,7 @@ namespace PLANR.Data
 
                 entity.Property(e => e.TaskDescription)
                     .IsRequired()
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("taskDescription")
                     .IsFixedLength(true);
 
@@ -186,22 +192,12 @@ namespace PLANR.Data
                     .HasConstraintName("FK_Task_Objectives");
             });
 
-            //modelBuilder.Entity<User>(entity =>
-            //{
-            //    entity.Property(e => e.Userid).HasColumnName("userid");
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.UserId).HasColumnName("userid");
+                entity.Property(e => e.UserToken).HasColumnName("usertoken");
 
-            //    entity.Property(e => e.Password)
-            //        .IsRequired()
-            //        .HasMaxLength(10)
-            //        .HasColumnName("password")
-            //        .IsFixedLength(true);
-
-            //    entity.Property(e => e.Username)
-            //        .IsRequired()
-            //        .HasMaxLength(10)
-            //        .HasColumnName("username")
-            //        .IsFixedLength(true);
-            //});
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

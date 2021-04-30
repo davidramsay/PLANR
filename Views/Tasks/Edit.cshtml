@@ -33,6 +33,11 @@
                 <input asp-for="TaskDueDate" class="form-control" />
                 <span asp-validation-for="TaskDueDate" class="text-danger"></span>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TaskStatus" /> @Html.DisplayNameFor(model => model.TaskStatus)
+                </label>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

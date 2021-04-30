@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Data;
-
 using PLANR.Models;
 
 namespace PLANR.Controllers
@@ -23,6 +22,12 @@ namespace PLANR.Controllers
 
         // GET: Tasks
         public async Task<IActionResult> Index()
+        {
+            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today);
+            return View(await TaskTrackerContext.ToListAsync());
+        }
+        // GET: AllTasks
+        public async Task<IActionResult> All()
         {
             var TaskTrackerContext = _context.Tasks.Include(t => t.Objective);
             return View(await TaskTrackerContext.ToListAsync());
@@ -93,7 +98,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Taskid,TaskName,TaskDescription,Objectiveid,TaskDueDate")] Models.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("Taskid, TaskName, TaskDescription, Objectiveid, TaskDueDate, TaskStatus")] Models.Task task)
         {
             if (id != task.Taskid)
             {
@@ -121,6 +126,106 @@ namespace PLANR.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
+            return View(task);
+        }
+
+        // GET: Tasks/Migrate/5
+
+        public async Task<IActionResult> Migrate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            return View(task);
+        }
+        [HttpPost]
+        public ActionResult Migrate1(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddDays(1);
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+        [HttpPost]
+
+        public ActionResult Migrate7(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddDays(7);
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+        [HttpPost]
+
+        public ActionResult Migrate30(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskDueDate = task.TaskDueDate.AddMonths(1);
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+
+        [HttpPost]
+        public ActionResult MarkComplete(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskStatus = true;
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+        [HttpPost]
+        public ActionResult MarkToDo(int Taskid)
+        {
+            var task = _context.Tasks.Find(Taskid);
+            task.TaskStatus = false;
+            _context.Update(task);
+            _context.SaveChanges();
+            return RedirectToAction("Migrate", new { id = Taskid });
+        }
+
+        // POST: Tasks/Migrate/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Migrate(int id, [Bind("TaskDueDate")] Models.Task task)
+        {
+            if (id != task.Taskid)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(task);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TaskExists(task.Taskid))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
             return View(task);
         }
 

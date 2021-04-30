@@ -1,0 +1,57 @@
+﻿@model PLANR.Models.Task
+
+@{
+    ViewData["Title"] = "Migrate";
+}
+
+<h1></h1>
+
+<h4>Migrate, Mark as Complete, or delete</h4>
+<hr />
+<h1>Task Name: @Model.TaskName</h1>
+<h4>Due Date:</h4>
+<h4>@Model.TaskDueDate.ToShortDateString() </h4>
+<div class="container">
+    <div class="row">
+        <br />
+        <div class="col">
+            <label>Migrate:</label>
+            <form method="post" asp-action="Migrate1">
+                <input type="hidden" asp-for="Taskid" />
+                <input type="submit" class="btn btn-primary" value="1 Day" />
+            </form>
+            <form method="post" asp-action="Migrate7">
+                <input type="hidden" asp-for="Taskid" />
+                <input type="submit" class="btn btn-primary" value="1 Week" />
+            </form>
+            <form method="post" asp-action="Migrate30">
+                <input type="hidden" asp-for="Taskid" />
+                <input type="submit" class="btn btn-primary" value="1 Month" />
+            </form>
+        </div>
+        <br />
+        <div class="col">
+            @if (Model.TaskStatus)
+            {
+                <h4>Task is complete.</h4>
+                <form method="post" asp-action="MarkToDo">
+                    <input type="hidden" asp-for="Taskid" />
+                    <input type="submit" class="btn btn-primary" value="Mark To Do" />
+                </form>
+            }
+            else
+            {
+                <h4>Task is to-do.</h4>
+                <form method="post" asp-action="MarkComplete">
+                    <input type="hidden" asp-for="Taskid" />
+                    <input type="submit" class="btn btn-primary" value="Mark Done" />
+                </form>
+            }
+        </div>
+    </div>
+    <div>
+    <a asp-action="Index">Back to List</a>
+</div>
+    </div>
+
+
