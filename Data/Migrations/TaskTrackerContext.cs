@@ -67,10 +67,6 @@ namespace PLANR.Data
             {
                 entity.Property(e => e.Categoryid).HasColumnName("categoryid");
 
-                entity.Property(e => e.EventDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("eventDate");
-
                 entity.Property(e => e.EventDesc)
                     .HasMaxLength(50)
                     .HasColumnName("eventDesc");
@@ -88,6 +84,13 @@ namespace PLANR.Data
                     .WithMany()
                     .HasForeignKey(d => d.Categoryid)
                     .HasConstraintName("FK_Events_Categories");
+
+                entity.Property(e => e.EventStart)
+                    .HasColumnType("datetime")
+                    .HasColumnName("eventStart");
+                entity.Property(e => e.EventEnd)
+                    .HasColumnType("datetime")
+                    .HasColumnName("eventEnd");
             });
 
             modelBuilder.Entity<Goal>(entity =>

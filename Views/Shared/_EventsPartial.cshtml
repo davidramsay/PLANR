@@ -10,7 +10,10 @@
                 @Html.DisplayNameFor(model => model.EventName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventDate)
+                @Html.DisplayNameFor(model => model.EventStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventEnd)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -21,17 +24,20 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EventDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

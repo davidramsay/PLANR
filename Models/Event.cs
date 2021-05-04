@@ -11,7 +11,8 @@ namespace PLANR.Models
         public int? Categoryid { get; set; }
         public string EventName { get; set; }
         public string EventDesc { get; set; }
-        public DateTime? EventDate { get; set; }
+        public DateTime EventStart { get; set; }
+        public DateTime EventEnd { get; set; }
 
         public virtual Category Category { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PLANR.Models.Task>
+﻿@model DashBoardViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,20 @@
                 <h1>Today's Schedule</h1>
                 <a asp-area="" asp-controller="Events" asp-action="Create">Schedule an event</a>
                 <div id="day's date">
-                        <ul class="list-timeline list-timeline-primary">
+                    <ul class="list-timeline list-timeline-primary">
+                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
+                            <p><span>08:00 - 12:00</span> - Class</p>
+                        </li>
+                        @foreach (var item in Model.Events)
+                        {
+                            <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
+                                <p>
+                                    <span>08:00 - 12:00</span>@Html.DisplayFor(modelItem => item.EventName)
+                                </p>
+                            </li>
+                        }
+                    </ul>
+                   @*<ul class="list-timeline list-timeline-primary">
                         <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
                             <p><span>08:00 - 12:00</span> - Class</p>
                         </li>
@@ -38,7 +51,7 @@
                         <li class="list-timeline-item p-0 pb-3 d-flex flex-wrap flex-column">
                             <p><span>18:00 - 23:00</span> - Unwind</p>
                         </li>
-                    </ul>
+                    </ul>*@
                 </div>
             </div>
 
@@ -64,7 +77,7 @@
                     </thead>
                     
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Tasks)
                         {
                             <tr>
                                 <td>

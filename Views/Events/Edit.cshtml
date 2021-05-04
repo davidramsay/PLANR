@@ -29,9 +29,14 @@
                 <span asp-validation-for="EventDesc" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventDate" class="control-label"></label>
-                <input asp-for="EventDate" class="form-control" />
-                <span asp-validation-for="EventDate" class="text-danger"></span>
+                <label asp-for="EventStart" class="control-label"></label>
+                <input asp-for="EventStart" class="form-control" />
+                <span asp-validation-for="EventStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventEnd" class="control-label"></label>
+                <input asp-for="EventEnd" class="form-control" />
+                <span asp-validation-for="EventEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

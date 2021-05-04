@@ -31,7 +31,7 @@ namespace PLANR.Controllers
         }
         // GET: Categories
         //if user with usertoken already exists, set current user to matching userid
-        //if user with usertoken does not exist, creat new user and set current user to new user
+        //if user with usertoken does not exist, creat new user and set current user to new usergithu
         public async Task<IActionResult> Index()
         {
             var user = GetUser();

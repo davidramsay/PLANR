@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Data;
 using PLANR.Models;
+using PLANR.Models.ViewModels;
 
 namespace PLANR.Controllers
 {
@@ -23,8 +24,10 @@ namespace PLANR.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today);
-            return View(await TaskTrackerContext.ToListAsync());
+            var model = new DashBoardViewModel();
+            model.Tasks = await _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today).ToListAsync();
+            model.Events = await _context.Events.Where(t => t.EventStart == System.DateTime.Today).Include(e => e.Category).OrderBy(d => d.EventStart).ToListAsync();
+            return View(model);
         }
         // GET: AllTasks
         public async Task<IActionResult> All()

@@ -59,7 +59,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eventid,Categoryid,EventName,EventDesc,EventDate")] Event eevent)
+        public async Task<IActionResult> Create([Bind("Eventid,Categoryid,EventName,EventDesc,EventDate,EventStart,EventEnd")] Event eevent)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eventid,Categoryid,EventName,EventDesc,EventDate")] Event eevent)
+        public async Task<IActionResult> Edit(int id, [Bind("Eventid,Categoryid,EventName,EventDesc,EventDate,EventStart,EventEnd")] Event eevent)
         {
             if (id != eevent.Eventid)
             {
