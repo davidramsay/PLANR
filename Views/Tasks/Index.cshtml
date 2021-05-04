@@ -3,6 +3,22 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    /* Red border */
+    hr.new1 {
+        width: 100%;
+        color: #aaaaaa;
+        height: 1px;
+        background-color: #aaaaaa;
+        border-top: 1px;
+    }
+
+    /* Dashed red border */
+    hr.new2 {
+        border-top: 1px dashed grey;
+    }
+
+</style>
 @if (User.Identity.IsAuthenticated)
 {
 <div class="row">    
@@ -18,15 +34,20 @@
                 <a asp-area="" asp-controller="Events" asp-action="Create">Schedule an event</a>
                 <div id="day's date">
                     <ul class="list-timeline list-timeline-primary">
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
-                            <p><span>08:00 - 12:00</span> - Class</p>
-                        </li>
                         @foreach (var item in Model.Events)
                         {
                             <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
                                 <p>
-                                    <span>08:00 - 12:00</span>@Html.DisplayFor(modelItem => item.EventName)
+                                    <strong>@Html.DisplayFor(modelItem => item.EventName):</strong>
+                                    @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)|
+                                    @Html.DisplayFor(modelItem => item.EventDesc)
+                                    <br />
+                                    From
+                                    @Html.DisplayFor(modelItem => item.EventStart.TimeOfDay)
+                                    -
+                                    @Html.DisplayFor(modelItem => item.EventEnd.TimeOfDay)
                                 </p>
+                                <hr class="new1" />
                             </li>
                         }
                     </ul>

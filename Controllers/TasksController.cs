@@ -26,7 +26,7 @@ namespace PLANR.Controllers
         {
             var model = new DashBoardViewModel();
             model.Tasks = await _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today).ToListAsync();
-            model.Events = await _context.Events.Where(t => t.EventStart == System.DateTime.Today).Include(e => e.Category).OrderBy(d => d.EventStart).ToListAsync();
+            model.Events = await _context.Events.Where(t => t.EventStart.Day == DateTime.Today.Day).Include(e => e.Category).OrderBy(d => d.EventStart).ToListAsync();
             return View(model);
         }
         // GET: AllTasks

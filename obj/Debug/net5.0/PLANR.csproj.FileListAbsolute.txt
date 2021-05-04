@@ -225,3 +225,4 @@ C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.dll
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\ref\PLANR.dll
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.pdb
 C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.genruntimeconfig.cache
+C:\Users\david\Desktop\MSSA\project\PLANR\PLANR\obj\Debug\net5.0\PLANR.csprojAssemblyReference.cache
