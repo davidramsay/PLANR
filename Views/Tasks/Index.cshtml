@@ -4,9 +4,17 @@
     ViewData["Title"] = "Index";
 }
 <style>
-    /* Red border */
     hr.new1 {
         width: 100%;
+        color: #aaaaaa;
+        margin:40px;
+        height: 1px;
+        background-color: #aaaaaa;
+        border-top: 1px;
+    }
+    hr.TableBreak {
+        width: 100%;
+        margin: 1px;
         color: #aaaaaa;
         height: 1px;
         background-color: #aaaaaa;
@@ -17,70 +25,72 @@
     hr.new2 {
         border-top: 1px dashed grey;
     }
-
+    .vl {
+        border-left: 1px solid #aaaaaa;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        margin-left: -3px;
+        top: 0;
+    }
 </style>
 @if (User.Identity.IsAuthenticated)
 {
-<div class="row">    
-    <p>
-        <a asp-area="" asp-controller="Records" asp-action="Create">Record New Data</a>
-    </p>
-    <p></p>
-</div>
+
     <div class="container">
         <div class="row">
             <div class="col">
                 <h1>Today's Schedule</h1>
-                <a asp-area="" asp-controller="Events" asp-action="Create">Schedule an event</a>
                 <div id="day's date">
-                    <ul class="list-timeline list-timeline-primary">
-                        @foreach (var item in Model.Events)
-                        {
-                            <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
-                                <p>
-                                    <strong>@Html.DisplayFor(modelItem => item.EventName):</strong>
-                                    @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)|
-                                    @Html.DisplayFor(modelItem => item.EventDesc)
-                                    <br />
-                                    From
-                                    @Html.DisplayFor(modelItem => item.EventStart.TimeOfDay)
-                                    -
-                                    @Html.DisplayFor(modelItem => item.EventEnd.TimeOfDay)
-                                </p>
-                                <hr class="new1" />
-                            </li>
-                        }
-                    </ul>
-                   @*<ul class="list-timeline list-timeline-primary">
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
-                            <p><span>08:00 - 12:00</span> - Class</p>
-                        </li>
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
-                            <p><span>12:00 - 13:00</span> - Lunch Break</p>
-                        </li>
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column" data-toggle="collapse" data-target="#day-1-item-4">
-                            <p><span>13:00 - 15:00</span> - Class W/ Rudy</p>
-                            <p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8" id="day-1-item-4"> Talk: OpenData / <span class="text-primary">MS Teams</span> </p>
-                        </li>
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column">
-                            <p><span>15:00 - 16:00</span> - Chat w/ Chris </p>
-                        </li>
-                        <li class="list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column" data-toggle="collapse" data-target="#day-1-item-6">
-                            <p><span>16:00 - 18:00</span> - Homework</p>
-                            <p class="my-0 collapse flex-fw text-uppercase text-xs text-dark op-8" id="day-1-item-6"> Talk: Ninja coding / <span class="text-primary">Room 31</span> </p>
-                        </li>
-                        <li class="list-timeline-item p-0 pb-3 d-flex flex-wrap flex-column">
-                            <p><span>18:00 - 23:00</span> - Unwind</p>
-                        </li>
-                    </ul>*@
-                </div>
-            </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Event
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Category
+                                </th>
+                                <th>
+                                    Time
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Events)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@Html.DisplayFor(modelItem => item.EventName):</strong>
 
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EventDesc)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Category.CategoryAbbreviation)
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EventStart)
+                                        -
+                                        @Html.DisplayFor(modelItem => item.EventEnd)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href='@Url.Action("Create", "Events")'>
+                    <button class="btn btn-outline-secondary">Schedule an Event</button>
+                </a>
+            </div>
+            <div class="col-2"><div class="vl"></div></div>
             <div class="col">
                 <h1>Today's Tasks</h1>
-                <p>
-                    <a asp-action="Create">Create New Task</a>
-                </p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -96,7 +106,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         @foreach (var item in Model.Tasks)
                         {
@@ -110,24 +120,24 @@
                                 <td>
                                     @if (item.TaskStatus)
                                     {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="8" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="8" />
+                                        </svg>
                                     }
                                     else
                                     {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                         </svg>
-                                        }
-                                    
+                                    }
+
                                 </td>
                                 <td>
                                     <div class="dropdown">
 
                                         <!--Trigger-->
 
-                                        <a class="btn-floating btn-lg black "  id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="btn-floating btn-lg black " id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -148,15 +158,28 @@
                         }
                     </tbody>
                 </table>
+                <a href='@Url.Action("Create", "Tasks")'>
+                    <button class="btn btn-outline-secondary">Add a Task</button>
+                </a>
             </div>
         </div>
+    </div>
+
+    <hr class="new1" />
+
+    <div class="row">
+        <div class="col">
+            <a href='@Url.Action("Create", "Records")'>
+                <button class="btn btn-outline-secondary">Record some Data</button>
+            </a>
         </div>
-            }
-            else
-            {
-            <div class="text-center">
-                <h1 class="display-4">Welcome To PlanR</h1>
-                <p>Meet Your Developer: <a href="https://www.linkedin.com/in/david-w-ramsay/">David Ramsay</a></p>
-                <p>Need some <a asp-area="" asp-controller="Help" asp-action="Index">help</a>? </p>
-            </div>
-            }
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome To PlanR</h1>
+        <p>Meet Your Developer: <a href="https://www.linkedin.com/in/david-w-ramsay/">David Ramsay</a></p>
+        <p>Need some <a asp-area="" asp-controller="Help" asp-action="Index">help</a>? </p>
+    </div>
+}

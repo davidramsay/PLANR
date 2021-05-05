@@ -6,9 +6,6 @@
 
 <h1>Records</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -25,23 +22,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecordDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MetricData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Objective.MetricName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Recordid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Recordid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Recordid">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MetricData)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Objective.MetricName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Recordid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Recordid">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Recordid">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<p>
+    <a asp-action="Create">
+        <button class="btn btn-outline-secondary">Create New</button>
+    </a>
+</p>
