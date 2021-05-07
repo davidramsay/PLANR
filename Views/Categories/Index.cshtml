@@ -17,10 +17,6 @@
             <th>
                 Category Abbreviation
             </th>
-            <th>
-                Actions
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,9 +28,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryAbbreviation)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.User.Password)
-            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Categoryid">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Categoryid">Details</a> |

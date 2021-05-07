@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,13 +21,43 @@ namespace PLANR.Controllers
         {
             _context = context;
         }
+        public User GetUser()
+        {
+            string userToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var qresult = from user in _context.Users
+                          where user.UserToken == userToken
+                          select user;
+            var result = qresult.FirstOrDefault();
+            return result;
+        }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
+            var today = System.DateTime.Today;
+            var user = GetUser();
+            int userId = user.UserId;
             var model = new DashBoardViewModel();
-            model.Tasks = await _context.Tasks.Include(t => t.Objective).Where(t => t.TaskDueDate == System.DateTime.Today).ToListAsync();
-            model.Events = await _context.Events.Where(t => t.EventStart.Day == DateTime.Today.Day).Include(e => e.Category).OrderBy(d => d.EventStart).ToListAsync();
+            var contexttasks = (from t in _context.Tasks
+                                join o in _context.Objectives
+                                on t.Objectiveid equals o.Objectiveid
+                                join g in _context.Goals
+                                on o.Goalid equals g.Goalid
+                                join c in _context.Categories
+                                on g.Categoryid equals c.Categoryid
+                                join u in _context.Users
+                                on c.UserId equals u.UserId
+                                where u.UserId == userId
+                                select t);
+            var contextevents = (from e in _context.Events
+                                 join c in _context.Categories
+                                 on e.Categoryid equals c.Categoryid
+                                 join u in _context.Users
+                                 on c.UserId equals u.UserId
+                                 where u.UserId == userId
+                                 select e);
+            model.Tasks = await contexttasks.Where(t => t.TaskDueDate.Day == DateTime.Today.Day).OrderBy(d => d.TaskDueDate).ToListAsync();
+            model.Events = await contextevents.Where(t => t.EventStart.Day == DateTime.Today.Day).OrderBy(d => d.EventStart).ToListAsync();
             return View(model);
         }
         // GET: AllTasks
@@ -58,7 +89,18 @@ namespace PLANR.Controllers
         // GET: Tasks/Create
         public IActionResult Create()
         {
-            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName");
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from o in _context.Objectives
+                                      join g in _context.Goals
+                                      on o.Goalid equals g.Goalid
+                                      join c in _context.Categories
+                                      on g.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select o).ToList();
+            ViewData["Objectiveid"] = new SelectList(TaskTrackerContext, "Objectiveid", "ObjectiveName");
             return View();
         }
 

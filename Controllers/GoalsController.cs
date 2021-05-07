@@ -40,7 +40,8 @@ namespace PLANR.Controllers
                                       join u in _context.Users
                                       on c.UserId equals u.UserId
                                       where u.UserId == userId
-                                      select g).ToListAsync();
+                                      select g)
+                                       .ToListAsync();
             return View(await TaskTrackerContext);
         }
 
@@ -107,7 +108,14 @@ namespace PLANR.Controllers
             {
                 return NotFound();
             }
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "CategoryAbbreviation", goal.Categoryid);
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from c in _context.Categories
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select c);
+            ViewData["Categories"] = new SelectList(TaskTrackerContext, "Categoryid", "CategoryAbbreviation");
             return View(goal);
         }
 
@@ -143,8 +151,14 @@ namespace PLANR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "CategoryAbbreviation", goal.Categoryid);
-            return View(goal);
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from c in _context.Categories
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select c);
+            ViewData["Categories"] = new SelectList(TaskTrackerContext, "Categoryid", "CategoryAbbreviation"); return View(goal);
         }
 
         // GET: Goals/Delete/5

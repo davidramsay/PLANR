@@ -72,9 +72,8 @@ namespace PLANR.Data
                     .HasColumnName("eventDesc");
 
                 entity.Property(e => e.EventName)
-                    .HasMaxLength(10)
-                    .HasColumnName("eventName")
-                    .IsFixedLength(true);
+                    .HasMaxLength(50)
+                    .HasColumnName("eventName");
 
                 entity.Property(e => e.Eventid)
                     .ValueGeneratedOnAdd()
@@ -122,11 +121,14 @@ namespace PLANR.Data
 
                 entity.Property(e => e.Goalid).HasColumnName("goalid");
 
+                entity.Property(e => e.ObjectiveName)
+                   .HasMaxLength(50)
+                   .HasColumnName("objectiveName");
+
                 entity.Property(e => e.MetricName)
                     .IsRequired()
                     .HasMaxLength(10)
-                    .HasColumnName("metricName")
-                    .IsFixedLength(true);
+                    .HasColumnName("metricName");
 
                 entity.Property(e => e.ObjectiveDueDate)
                     .HasColumnType("datetime")
