@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Models;
 using PLANR.Data;
-
+using System.Security.Claims;
 
 namespace PLANR.Controllers
 {
@@ -20,12 +20,30 @@ namespace PLANR.Controllers
         {
             _context = context;
         }
-
+        public User GetUser()
+        {
+            string userToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var qresult = from user in _context.Users
+                          where user.UserToken == userToken
+                          select user;
+            var result = qresult.FirstOrDefault();
+            return result;
+        }
         // GET: Objectives
         public async Task<IActionResult> Index()
         {
-            var taskTrackerContext = _context.Objectives.Include(o => o.Goal);
-            return View(await taskTrackerContext.ToListAsync());
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from o in _context.Objectives
+                                      join g in _context.Goals
+                                      on o.Goalid equals g.Goalid
+                                      join c in _context.Categories
+                                      on g.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select o).ToListAsync();
+            return View(await TaskTrackerContext);
         }
 
         // GET: Objectives/Details/5
@@ -50,7 +68,17 @@ namespace PLANR.Controllers
         // GET: Objectives/Create
         public IActionResult Create()
         {
-            ViewData["Goalid"] = new SelectList(_context.Goals, "Goalid", "GoalName");
+            var user = GetUser();
+            int userId = user.UserId;
+            var objectivesGoalsList = (from g in _context.Goals
+                                       join c in _context.Categories
+                                       on g.Categoryid equals c.Categoryid
+                                       join u in _context.Users
+                                       on c.UserId equals u.UserId
+                                       where u.UserId == userId
+                                       select g).ToList();
+            ViewData["Goalid"] = new SelectList(objectivesGoalsList, "Goalid", "GoalName");
+            
             return View();
         }
 
@@ -59,7 +87,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Objectiveid,Goalid,MetricName,ObjectiveDueDate")] Objective objective)
+        public async Task<IActionResult> Create([Bind("ObjectiveName,Objectiveid,Goalid,MetricName,ObjectiveDueDate")] Objective objective)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +95,6 @@ namespace PLANR.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Goalid"] = new SelectList(_context.Goals, "Goalid", "GoalName", objective.Goalid);
             return View(objective);
         }
 
@@ -84,7 +111,16 @@ namespace PLANR.Controllers
             {
                 return NotFound();
             }
-            ViewData["Goalid"] = new SelectList(_context.Goals, "Goalid", "GoalName", objective.Goalid);
+            var user = GetUser();
+            int userId = user.UserId;
+            var objectivesGoalsList = (from g in _context.Goals
+                                       join c in _context.Categories
+                                       on g.Categoryid equals c.Categoryid
+                                       join u in _context.Users
+                                       on c.UserId equals u.UserId
+                                       where u.UserId == userId
+                                       select g).ToList();
+            ViewData["Goalid"] = new SelectList(objectivesGoalsList, "Goalid", "GoalName");
             return View(objective);
         }
 
@@ -93,7 +129,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Objectiveid,Goalid,MetricName,ObjectiveDueDate")] Objective objective)
+        public async Task<IActionResult> Edit(int id, [Bind("ObjectiveName,Objectiveid,Goalid,MetricName,ObjectiveDueDate")] Objective objective)
         {
             if (id != objective.Objectiveid)
             {
@@ -120,7 +156,6 @@ namespace PLANR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Goalid"] = new SelectList(_context.Goals, "Goalid", "GoalName", objective.Goalid);
             return View(objective);
         }
 

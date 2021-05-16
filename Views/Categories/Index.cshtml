@@ -6,23 +6,17 @@
 
 <h1>Categories</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <p>@User.Identity.Name</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                Category Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryAbbreviation)
+                Category Abbreviation
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>*@
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -34,9 +28,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryAbbreviation)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.User.Password)
-            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Categoryid">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Categoryid">Details</a> |
@@ -46,3 +37,8 @@
 }
     </tbody>
 </table>
+<p>
+    <a asp-action="Create">
+        <button class="btn btn-outline-secondary">Create New</button>
+    </a>
+</p>

@@ -18,6 +18,41 @@ a {
   border-color: #1861ac;
 }
 
+hr.new1 {
+    width: 100%;
+    color: #aaaaaa;
+    margin: 40px;
+    height: 1px;
+    background-color: #aaaaaa;
+    border-top: 1px;
+    */
+}
+
+/* grey border w/no margin*/
+hr.TableBreak {
+    width: 100%;
+    margin: 1px;
+    color: #aaaaaa;
+    height: 1px;
+    background-color: #aaaaaa;
+    border-top: 1px;
+}
+
+/* Dashed gray border */
+hr.new2 {
+    border-top: 1px dashed grey;
+}
+
+/*vertical line 1px wide, solid, with a margin*/
+.vl {
+    border-left: 1px solid #aaaaaa !important;
+    height: 100%;
+    color: #aaaaaa;
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+}
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;

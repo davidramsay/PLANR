@@ -6,36 +6,40 @@
 
 <h1>Objectives</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MetricName)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ObjectiveDueDate)
+                Metric
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Goal)
+                Due Date
             </th>
-            <th></th>
+            @*<th>
+                Goal
+            </th>*@
+
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.ObjectiveName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MetricName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ObjectiveDueDate)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Goal.GoalName)
-            </td>
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Objectiveid">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Objectiveid">Details</a> |
@@ -45,3 +49,8 @@
 }
     </tbody>
 </table>
+<p>
+    <a asp-action="Create">
+        <button class="btn btn-outline-secondary">Create New</button>
+    </a>
+</p>

@@ -17,9 +17,14 @@ namespace PLANR.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Categoryid { get; set; }
         public int UserId { get; set; }
+        [Display(Name = "Category Name")]
+        [Required, StringLength(50)]
         public string CategoryName { get; set; }
+        [Display(Name = "Abbreviation")]
+        [Required, StringLength(5)]
         public string CategoryAbbreviation { get; set; }
         public virtual ICollection<Goal> Goals { get; set; }
+
         public User User { get; set; }
     }
 }

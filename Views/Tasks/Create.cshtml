@@ -4,31 +4,30 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Task</h1>
 
-<h4>Task</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="TaskName" class="control-label"></label>
+                <label asp-for="TaskName" class="control-label">Name</label>
                 <input asp-for="TaskName" class="form-control" />
                 <span asp-validation-for="TaskName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TaskDescription" class="control-label"></label>
+                <label asp-for="TaskDescription" class="control-label">Description</label>
                 <input asp-for="TaskDescription" class="form-control" />
                 <span asp-validation-for="TaskDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Objectiveid" class="control-label"></label>
+                <label asp-for="Objectiveid" class="control-label">Objective</label>
                 <select asp-for="Objectiveid" class ="form-control" asp-items="ViewBag.Objectiveid"></select>
             </div>
             <div class="form-group">
-                <label asp-for="TaskDueDate" class="control-label"></label>
-                <input asp-for="TaskDueDate" class="form-control" />
+                <label asp-for="TaskDueDate" class="control-label">Due Date</label>
+                <input asp-for="TaskDueDate" type="date" class="form-control" />
                 <span asp-validation-for="TaskDueDate" class="text-danger"></span>
             </div>
             <div class="form-group">

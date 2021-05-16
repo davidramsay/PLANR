@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PLANR;
 using PLANR.Models;
 using PLANR.Data;
-
+using System.Security.Claims;
 
 namespace PLANR.Controllers
 {
@@ -20,11 +20,40 @@ namespace PLANR.Controllers
         {
             _context = context;
         }
-
+        public User GetUser()
+        {
+            string userToken = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var qresult = from user in _context.Users
+                          where user.UserToken == userToken
+                          select user;
+            var result = qresult.FirstOrDefault();
+            return result;
+        }
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            var TaskTrackerContext = _context.Events.Include(e => e.Category);
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from e in _context.Events
+                                      join c in _context.Categories
+                                      on e.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select e);
+            return View(await TaskTrackerContext.ToListAsync());
+        }
+        public async Task<IActionResult> TodaysEvents()
+        {
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from e in _context.Events
+                                      join c in _context.Categories
+                                      on e.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select e).Where(t => t.EventStart.Day == DateTime.Today.Day).OrderBy(d => d.EventStart);
             return View(await TaskTrackerContext.ToListAsync());
         }
 
@@ -50,7 +79,14 @@ namespace PLANR.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["Categoryid"] = new SelectList(_context.Categories, "Categoryid", "CategoryAbbreviation");
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from c in _context.Categories
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select c);
+            ViewData["Categories"] = new SelectList(TaskTrackerContext, "Categoryid", "CategoryAbbreviation");
             return View();
         }
 
@@ -59,7 +95,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eventid,Categoryid,EventName,EventDesc,EventDate")] Event eevent)
+        public async Task<IActionResult> Create([Bind("Eventid,Categoryid,EventName,EventDesc,EventDate,EventStart,EventEnd")] Event eevent)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +129,7 @@ namespace PLANR.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eventid,Categoryid,EventName,EventDesc,EventDate")] Event eevent)
+        public async Task<IActionResult> Edit(int id, [Bind("Eventid,Categoryid,EventName,EventDesc,EventDate,EventStart,EventEnd")] Event eevent)
         {
             if (id != eevent.Eventid)
             {

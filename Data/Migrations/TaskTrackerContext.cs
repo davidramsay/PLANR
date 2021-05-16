@@ -67,18 +67,13 @@ namespace PLANR.Data
             {
                 entity.Property(e => e.Categoryid).HasColumnName("categoryid");
 
-                entity.Property(e => e.EventDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("eventDate");
-
                 entity.Property(e => e.EventDesc)
                     .HasMaxLength(50)
                     .HasColumnName("eventDesc");
 
                 entity.Property(e => e.EventName)
-                    .HasMaxLength(10)
-                    .HasColumnName("eventName")
-                    .IsFixedLength(true);
+                    .HasMaxLength(50)
+                    .HasColumnName("eventName");
 
                 entity.Property(e => e.Eventid)
                     .ValueGeneratedOnAdd()
@@ -88,6 +83,13 @@ namespace PLANR.Data
                     .WithMany()
                     .HasForeignKey(d => d.Categoryid)
                     .HasConstraintName("FK_Events_Categories");
+
+                entity.Property(e => e.EventStart)
+                    .HasColumnType("datetime")
+                    .HasColumnName("eventStart");
+                entity.Property(e => e.EventEnd)
+                    .HasColumnType("datetime")
+                    .HasColumnName("eventEnd");
             });
 
             modelBuilder.Entity<Goal>(entity =>
@@ -119,11 +121,14 @@ namespace PLANR.Data
 
                 entity.Property(e => e.Goalid).HasColumnName("goalid");
 
+                entity.Property(e => e.ObjectiveName)
+                   .HasMaxLength(50)
+                   .HasColumnName("objectiveName");
+
                 entity.Property(e => e.MetricName)
                     .IsRequired()
                     .HasMaxLength(10)
-                    .HasColumnName("metricName")
-                    .IsFixedLength(true);
+                    .HasColumnName("metricName");
 
                 entity.Property(e => e.ObjectiveDueDate)
                     .HasColumnType("datetime")

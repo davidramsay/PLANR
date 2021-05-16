@@ -12,18 +12,25 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<input type="hidden" asp-for="Objectiveid" />*@ 
             <div class="form-group">
-                <label asp-for="Goalid" class="control-label"></label>
-                <select asp-for="Goalid" class ="form-control" asp-items="ViewBag.Goalid"></select>
+                <label class="control-label">Name</label>
+                <input asp-for="ObjectiveName" class="form-control" />
+                <span asp-validation-for="ObjectiveName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MetricName" class="control-label"></label>
+                <label class="control-label">Goal</label>
+                <select asp-for="Goalid" class="form-control" asp-items="ViewBag.Goalid"></select>
+                <span asp-validation-for="Goalid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Metric</label>
                 <input asp-for="MetricName" class="form-control" />
                 <span asp-validation-for="MetricName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ObjectiveDueDate" class="control-label"></label>
-                <input asp-for="ObjectiveDueDate" class="form-control" />
+                <label class="control-label">Due Date</label>
+                <input asp-for="ObjectiveDueDate" type ="date" class="form-control" />
                 <span asp-validation-for="ObjectiveDueDate" class="text-danger"></span>
             </div>
             <div class="form-group">

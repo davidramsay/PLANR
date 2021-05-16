@@ -10,22 +10,28 @@
     <h4>Objective</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MetricName)
+        <dt class="col-sm-2">
+            Name
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ObjectiveName)
+        </dd>
+        <dt class="col-sm-2">
+            Metric
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MetricName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ObjectiveDueDate)
+        <dt class="col-sm-2">
+            Due Date
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ObjectiveDueDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Goal)
+        <dt class="col-sm-2">
+            Goal
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Goal.GoalName)
         </dd>
     </dl>
