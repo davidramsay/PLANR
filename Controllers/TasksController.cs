@@ -34,7 +34,7 @@ namespace PLANR.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var today = System.DateTime.Today;
+            var today = System.DateTime.Today.Day;
             var user = GetUser();
             int userId = user.UserId;
             var model = new DashBoardViewModel();
@@ -56,15 +56,27 @@ namespace PLANR.Controllers
                                  on c.UserId equals u.UserId
                                  where u.UserId == userId
                                  select e);
-            model.Tasks = await contexttasks.Where(t => t.TaskDueDate.Day == DateTime.Today.Day).OrderBy(d => d.TaskDueDate).ToListAsync();
-            model.Events = await contextevents.Where(t => t.EventStart.Day == DateTime.Today.Day).OrderBy(d => d.EventStart).ToListAsync();
+            model.Tasks = await contexttasks.Where(t => t.TaskDueDate.Day == today).OrderBy(d => d.TaskDueDate).ToListAsync();
+            model.Events = await contextevents.Where(t => t.EventStart.Day == today).OrderBy(d => d.EventStart).ToListAsync();
             return View(model);
         }
         // GET: AllTasks
         public async Task<IActionResult> All()
         {
-            var TaskTrackerContext = _context.Tasks.Include(t => t.Objective);
-            return View(await TaskTrackerContext.ToListAsync());
+            var user = GetUser();
+            int userId = user.UserId;
+            var contexttasks = (from t in _context.Tasks
+                                join o in _context.Objectives
+                                on t.Objectiveid equals o.Objectiveid
+                                join g in _context.Goals
+                                on o.Goalid equals g.Goalid
+                                join c in _context.Categories
+                                on g.Categoryid equals c.Categoryid
+                                join u in _context.Users
+                                on c.UserId equals u.UserId
+                                where u.UserId == userId
+                                select t);
+           return View(await contexttasks.ToListAsync());
         }
 
         // GET: Tasks/Details/5

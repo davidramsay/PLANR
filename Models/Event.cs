@@ -21,7 +21,6 @@ namespace PLANR.Models
         public DateTime EventStart { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:h:mm tt}")]
         [Display(Name = "End")]
-
         public DateTime EventEnd { get; set; }
 
         public virtual Category Category { get; set; }

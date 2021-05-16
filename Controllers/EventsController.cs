@@ -40,6 +40,19 @@ namespace PLANR.Controllers
                                       join u in _context.Users
                                       on c.UserId equals u.UserId
                                       where u.UserId == userId
+                                      select e);
+            return View(await TaskTrackerContext.ToListAsync());
+        }
+        public async Task<IActionResult> TodaysEvents()
+        {
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from e in _context.Events
+                                      join c in _context.Categories
+                                      on e.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
                                       select e).Where(t => t.EventStart.Day == DateTime.Today.Day).OrderBy(d => d.EventStart);
             return View(await TaskTrackerContext.ToListAsync());
         }
