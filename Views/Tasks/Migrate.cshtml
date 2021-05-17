@@ -3,79 +3,59 @@
 @{
     ViewData["Title"] = "Migrate";
 }
-<style>
-    .grid-container {
-        display: grid;
-        height: 400px;
-        align-content: center;
-        grid-template-columns: auto auto auto;
-        grid-gap: 10px;
-        padding: 10px;
-    }
 
-        .grid-container > div {
-            text-align: center;
-            padding: 20px 0;
-            font-size: 30px;
-        }
-</style>
-<h1></h1>
-
-<h4>Migrate, Mark as Complete, or delete</h4>
+<h4>Actions: Migrate or Mark as Complete</h4>
 <hr />
-<h1>Task Name: @Model.TaskName</h1>
+<h1>Task: @Model.TaskName</h1>
 <hr />
-
-
-    <div class="grid-container">
-            <h4>Due Date:</h4>
-            <h4>@Model.TaskDueDate.ToShortDateString() </h4>
-            <div>
-                <br />
-                <div>
-                    <label>Migrate:</label>
-                    <form method="post" asp-action="Migrate30">
-                        <input type="hidden" asp-for="Taskid" />
-                        <input type="submit" class="btn btn-primary" value="1 Month" />
-                    </form>
+<h2>Due Date: @Model.TaskDueDate.ToShortDateString()</h2>
+<hr/>
+<h4>Migrate:</h4>
+                <div class="row">
+                    <div class="col">
+                        <form method="post" asp-action="Migrate30">
+                            <input type="hidden" asp-for="Taskid" />
+                            <input type="submit" class="btn btn-primary" value="1 Month" />
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form method="post" asp-action="Migrate7">
+                            <input type="hidden" asp-for="Taskid" />
+                            <input type="submit" class="btn btn-primary" value="1 Week" />
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form method="post" asp-action="Migrate1">
+                            <input type="hidden" asp-for="Taskid" />
+                            <input type="submit" class="btn btn-primary" value="1 Day" />
+                        </form>
+                    </div>
                 </div>
-            </div>
-                <br />
+<hr />
             <div>
                 <div>
-                    @if (Model.TaskStatus)
-                    {
-                        <h4>Task is complete.</h4>
-                        <form method="post" asp-action="MarkToDo">
-                            <input type="hidden" asp-for="Taskid" />
-                            <input type="submit" class="btn btn-primary" value="Mark To Do" />
-                        </form>
-                    }
-                    else
-                    {
-                        <h4>Task is to-do.</h4>
-                        <form method="post" asp-action="MarkComplete">
-                            <input type="hidden" asp-for="Taskid" />
-                            <input type="submit" class="btn btn-primary" value="Mark Done" />
-                        </form>
-                    }
+                    <div>
+                        @if (Model.TaskStatus)
+                        {
+                            <h4>Task is complete.</h4>
+                            <form method="post" asp-action="MarkToDo">
+                                <input type="hidden" asp-for="Taskid" />
+                                <input type="submit" class="btn btn-primary" value="Mark To Do" />
+                            </form>
+                        }
+                        else
+                        {
+                            <h4>Task is to-do.</h4>
+                            <form method="post" asp-action="MarkComplete">
+                                <input type="hidden" asp-for="Taskid" />
+                                <input type="submit" class="btn btn-primary" value="Mark Done" />
+                            </form>
+                        }
+                    </div>
                 </div>
-             </div>
-                <div>
-                    <form method="post" asp-action="Migrate1">
-                        <input type="hidden" asp-for="Taskid" />
-                        <input type="submit" class="btn btn-primary" value="1 Day" />
-                    </form>
-                </div>
-                <div>
-                    <form method="post" asp-action="Migrate7">
-                        <input type="hidden" asp-for="Taskid" />
-                        <input type="submit" class="btn btn-primary" value="1 Week" />
-                    </form>
-                </div>
-                <div>5</div>
-                <div>6</div>
             </div>
-    <a asp-action="Index">Back to List</a>
+                <hr/>
+            
+    <a style=" vertical-align: text-bottom;" asp-action ="Index">Back to List</a>
 
 

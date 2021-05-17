@@ -44,7 +44,7 @@ namespace PLANR.Controllers
                                 join u in _context.Users
                                 on c.UserId equals u.UserId
                                 where u.UserId == userId
-                                select t).ToListAsync();
+                                select t).Include(r => r.Objective).ToListAsync();
             return View(await contextrecords);
         }
 

@@ -48,14 +48,14 @@ namespace PLANR.Controllers
                                 join u in _context.Users
                                 on c.UserId equals u.UserId
                                 where u.UserId == userId
-                                select t);
+                                select t).Include(r => r.Objective);
             var contextevents = (from e in _context.Events
                                  join c in _context.Categories
                                  on e.Categoryid equals c.Categoryid
                                  join u in _context.Users
                                  on c.UserId equals u.UserId
                                  where u.UserId == userId
-                                 select e);
+                                 select e).Include(r => r.Category);
             model.Tasks = await contexttasks.Where(t => t.TaskDueDate.Day == today).OrderBy(d => d.TaskDueDate).ToListAsync();
             model.Events = await contextevents.Where(t => t.EventStart.Day == today).OrderBy(d => d.EventStart).ToListAsync();
             return View(model);
@@ -75,8 +75,8 @@ namespace PLANR.Controllers
                                 join u in _context.Users
                                 on c.UserId equals u.UserId
                                 where u.UserId == userId
-                                select t);
-           return View(await contexttasks.ToListAsync());
+                                select t).Include(r => r.Objective); 
+            return View(await contexttasks.ToListAsync());
         }
 
         // GET: Tasks/Details/5
@@ -146,7 +146,18 @@ namespace PLANR.Controllers
             {
                 return NotFound();
             }
-            ViewData["Objectiveid"] = new SelectList(_context.Objectives, "Objectiveid", "MetricName", task.Objectiveid);
+            var user = GetUser();
+            int userId = user.UserId;
+            var TaskTrackerContext = (from o in _context.Objectives
+                                      join g in _context.Goals
+                                      on o.Goalid equals g.Goalid
+                                      join c in _context.Categories
+                                      on g.Categoryid equals c.Categoryid
+                                      join u in _context.Users
+                                      on c.UserId equals u.UserId
+                                      where u.UserId == userId
+                                      select o).ToList();
+            ViewData["Objectiveid"] = new SelectList(TaskTrackerContext, "Objectiveid", "ObjectiveName");
             return View(task);
         }
 
